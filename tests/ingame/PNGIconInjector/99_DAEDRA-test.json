@@ -1,0 +1,9 @@
+{
+  // Test only: maps DAEDRA's throw-away labels to icons DICK already ships.
+  "version": 1,
+  "rules": [
+    { "match": { "iconLabel": "daedra_test_akatosh" },    "icon": "magic/deity_akatosh.svg" },
+    { "match": { "iconLabel": "daedra_test_beastblood" }, "icon": "magic/beast_paw.svg" },
+    { "match": { "iconLabel": "daedra_test_circlet" },    "icon": "magic/skill_enchanting.svg" }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DAEDRA rule file",
+  "type": "object",
+  "required": ["version", "rules"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "rules": { "type": "array", "items": { "$ref": "#/definitions/rule" } }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "form": { "type": "string", "pattern": "^[^|]+\\|(0[xX])?[0-9A-Fa-f]{1,6}$", "description": "Plugin.esp|0xLOCALID (local id; for light plugins the 3-digit id)" },
+    "strings": { "oneOf": [ { "type": "string" }, { "type": "array", "items": { "type": "string" }, "minItems": 1 } ] },
+    "kind": { "enum": ["spell", "enchantment", "potion", "ingredient", "ability", "power", "lesserPower", "disease", "scroll", "staff", "unknown"] },
+    "rule": {
+      "type": "object",
+      "required": ["match", "assign"],
+      "properties": {
+        "id": { "type": "string" },
+        "comment": { "type": "string" },
+        "priority": { "type": "integer", "default": 0 },
+        "match": { "$ref": "#/definitions/match" },
+        "assign": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "iconLabel": { "type": "string" },
+            "iconSource": { "type": "string" },
+            "sourceText": { "type": "string" },
+            "nameText": { "type": "string" },
+            "extraText": { "type": "string" },
+            "sortGroup": { "type": "string" },
+            "color": { "type": "string" },
+            "hide": { "type": "boolean" },
+            "iconFromWorn": { "type": "boolean", "description": "Use the icon of the worn item that carries the effect" },
+            "iconFromSource": { "type": "boolean", "description": "Use the icon of the source spell or enchantment" },
+            "iconAsForm": { "$ref": "#/definitions/form", "description": "Use the icon of this form" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "match": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "plugin": { "type": "string", "description": "Plugin that defines the source form" },
+        "effect": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "form": { "$ref": "#/definitions/form" },
+            "edid": { "$ref": "#/definitions/strings" },
+            "keywords": { "$ref": "#/definitions/strings", "description": "all of" },
+            "keywordsAny": { "$ref": "#/definitions/strings" },
+            "archetype": { "$ref": "#/definitions/strings" },
+            "actorValue": { "$ref": "#/definitions/strings" },
+            "detrimental": { "type": "boolean" },
+            "plugin": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "form": { "$ref": "#/definitions/form" },
+            "edid": { "$ref": "#/definitions/strings" },
+            "kind": {
+              "oneOf": [
+                { "$ref": "#/definitions/kind" },
+                { "type": "array", "items": { "$ref": "#/definitions/kind" }, "minItems": 1 }
+              ]
+            },
+            "keywords": { "$ref": "#/definitions/strings" },
+            "keywordsAny": { "$ref": "#/definitions/strings" },
+            "spellType": { "$ref": "#/definitions/strings" },
+            "name": {
+              "oneOf": [
+                { "type": "string" },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "properties": {
+                    "exact": { "type": "string" },
+                    "contains": { "type": "string" },
+                    "regex": { "type": "string" }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "plugin": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "caster": {
+          "oneOf": [
+            { "enum": ["player", "follower", "other"] },
+            { "type": "object", "required": ["form"], "properties": { "form": { "$ref": "#/definitions/form" } }, "additionalProperties": false }
+          ]
+        },
+        "worn": {
+          "type": "object",
+          "properties": {
+            "form": { "$ref": "#/definitions/form" },
+            "keywords": { "$ref": "#/definitions/strings" }
+          },
+          "additionalProperties": false
+        },
+        "anyOf": { "type": "array", "items": { "$ref": "#/definitions/match" }, "minItems": 1 },
+        "allOf": { "type": "array", "items": { "$ref": "#/definitions/match" }, "minItems": 1 },
+        "not": { "$ref": "#/definitions/match" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  // Examples. Files whose name starts with "_" are not loaded: copy this file to a name without the underscore
+  // (for example MyRules.json) and keep the rules you want. The form IDs in the second and third rule are
+  // placeholders: set dumpActiveEffects = true in DAEDRA.ini, open the Magic menu, then copy the real
+  // "Plugin.esp|0xLOCALID" values from DAEDRA.log.
+  "version": 1,
+  "rules": [
+    {
+      // Every effect that comes from worn gear shows the same icon as the gear item itself.
+      // Low priority, so any more specific rule still wins.
+      "id": "example.gear.icon",
+      "priority": -10,
+      "match": { "worn": {} },
+      "assign": { "iconFromWorn": true }
+    },
+    {
+      // Same effect, different source: only the shrine blessing gets this icon label.
+      "id": "example.shrine.blessing",
+      "match": {
+        "effect": { "form": "Skyrim.esm|0x000000" },
+        "source": { "kind": ["ability", "spell"], "name": { "contains": "Blessing of Akatosh" } }
+      },
+      "assign": { "iconLabel": "deity_akatosh" }
+    },
+    {
+      // Show the icon of the spell or ability that produced the effect, and relabel the Source column.
+      "id": "example.beastblood",
+      "match": { "source": { "name": "Beastblood", "kind": "ability" } },
+      "assign": { "iconFromSource": true, "sourceText": "Beastblood" }
+    }
+  ]
+}

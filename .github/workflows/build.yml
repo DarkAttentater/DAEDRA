@@ -1,0 +1,32 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    env:
+      VCPKG_ROOT: C:\vcpkg
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Rule engine tests
+        run: |
+          cmake --preset tests
+          cmake --build --preset tests
+          ctest --preset tests --output-on-failure
+
+      - name: Plugin
+        run: |
+          cmake --preset plugin
+          cmake --build --preset plugin
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DAEDRA-dll
+          path: build/plugin/Release/DAEDRA.dll

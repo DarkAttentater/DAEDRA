@@ -1,0 +1,35 @@
+{
+  // Test rules for the first row-modification build. The labels below are deliberately fake
+  // ("daedra_test_*") so they are easy to find in DAEDRA.log; the icon will simply fall back to
+  // whatever PNGII shows for an unknown label. Forms come from your own DAEDRA.log dumps.
+  "version": 1,
+  "rules": [
+    {
+      "id": "test.akatosh.blessing",
+      "match": {
+        "effect": { "form": "Skyrim.esm|0x0FB989" },
+        "source": { "form": "Skyrim.esm|0x0FB988" }
+      },
+      "assign": { "sourceText": "Blessing of Akatosh [DAEDRA]" }
+    },
+    {
+      "id": "test.circlet.experience",
+      "match": {
+        "effect": { "form": "Summermyst - Enchantments of Skyrim.esp|0x1754E6" },
+        "source": { "kind": "enchantment" }
+      },
+      "assign": { "iconFromWorn": true, "sourceText": "Experience Circlet [DAEDRA]" }
+    },
+    {
+      "id": "test.beastblood",
+      "match": { "source": { "name": "Beastblood", "kind": "ability" } },
+      "assign": { "iconFromSource": true, "sourceText": "Beastblood [DAEDRA]" }
+    },
+    {
+      "id": "test.any.gear",
+      "priority": -10,
+      "match": { "worn": {} },
+      "assign": { "iconFromWorn": true }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "daedra",
+  "version-string": "0.1.0",
+  "dependencies": [
+    "nlohmann-json",
+    "doctest",
+    "directxmath",
+    "directxtk",
+    "fmt",
+    "rapidcsv",
+    "simpleini",
+    "spdlog",
+    "toml11",
+    "xbyak"
+  ]
+}

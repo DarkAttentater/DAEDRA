@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "tests",
+      "displayName": "Rule engine + tests only (no CommonLibSSE-NG needed)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/tests",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md",
+        "DAEDRA_BUILD_PLUGIN": "OFF"
+      }
+    },
+    {
+      "name": "plugin",
+      "displayName": "Full SKSE plugin (SE + AE, no VR)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/plugin",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md",
+        "DAEDRA_BUILD_PLUGIN": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "tests", "configurePreset": "tests", "configuration": "Release" },
+    { "name": "plugin", "configurePreset": "plugin", "configuration": "Release" }
+  ],
+  "testPresets": [
+    { "name": "tests", "configurePreset": "tests", "configuration": "Release" }
+  ]
+}
